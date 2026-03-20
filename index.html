@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scout — Upload Resume</title>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0a0a0a; --white: #fff;
+    --g50: #f9f9f8; --g100: #f2f1ef; --g200: #e4e2de;
+    --g300: #ccc9c2; --g400: #9e9b93; --g500: #6b6860; --g600: #3f3d38;
+    --green: #166534; --green-l: #dcfce7; --green-b: #86efac;
+    --red: #991b1b; --red-l: #fee2e2; --red-b: #fca5a5;
+    --blue: #1d4ed8; --blue-l: #eff6ff; --blue-b: #bfdbfe;
+  }
+  html, body, #root { height: 100%; font-family: 'Instrument Sans', sans-serif; background: var(--g50); -webkit-font-smoothing: antialiased; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+// ══════════════════════════════════════
+// CONFIG — UPDATE THESE
+// ══════════════════════════════════════
+const SP_SITE = 'https://yashtechnologies841.sharepoint.com/sites/Scout';
+const SP_LIBRARY = 'ResumeLibrary';
+// ══════════════════════════════════════
+
+const { useState, useRef, useCallback } = React;
+
+// ── STYLES ──
+const S = {
+  page: { minHeight: '100vh', display: 'grid', gridTemplateColumns: '1fr 1fr' },
+  left: {
+    background: 'var(--black)', display: 'flex', flexDirection: 'column',
+    justifyContent: 'space-between', padding: '48px', position: 'sticky',
+    top: 0, height: '100vh', overflow: 'hidden',
+  },
+  logo: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '56px' },
+  logoText: { fontFamily: "'Instrument Serif', serif", fontSize: '22px', color: '#fff', letterSpacing: '-0.5px', fontStyle: 'italic' },
+  logoDot: { width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80' },
+  headline: { fontFamily: "'Instrument Serif', serif", fontSize: '44px', lineHeight: 1.05, letterSpacing: '-1.5px', color: '#fff', marginBottom: '16px' },
+  headlineEm: { fontStyle: 'italic', color: 'rgba(255,255,255,0.45)' },
+  sub: { fontSize: '14px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.7, maxWidth: '320px' },
+  steps: { marginTop: '44px', display: 'flex', flexDirection: 'column', gap: '16px' },
+  step: { display: 'flex', alignItems: 'flex-start', gap: '12px' },
+  stepNum: { width: '24px', height: '24px', borderRadius: '5px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.35)', flexShrink: 0 },
+  stepTitle: { fontSize: '13px', fontWeight: 600, color: 'rgba(255,255,255,0.8)', marginBottom: '2px' },
+  stepSub: { fontSize: '12px', color: 'rgba(255,255,255,0.35)' },
+  leftBottom: { fontSize: '11px', color: 'rgba(255,255,255,0.18)' },
+  right: { padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'var(--g50)' },
+  formWrap: { width: '100%', maxWidth: '420px', margin: '0 auto' },
+  formTitle: { fontSize: '22px', fontWeight: 700, letterSpacing: '-0.5px', marginBottom: '6px' },
+  formSub: { fontSize: '13px', color: 'var(--g400)', lineHeight: 1.6, marginBottom: '28px' },
+  form: { display: 'flex', flexDirection: 'column', gap: '15px' },
+  field: { display: 'flex', flexDirection: 'column', gap: '5px' },
+  label: { fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--g500)' },
+  req: { color: 'var(--red)' },
+  input: { height: '42px', padding: '0 13px', background: '#fff', border: '1.5px solid var(--g200)', borderRadius: '7px', fontSize: '13px', fontFamily: "'Instrument Sans', sans-serif", color: 'var(--black)', outline: 'none', width: '100%', transition: 'border-color 0.15s' },
+  inputFocus: { borderColor: 'var(--black)' },
+  inputError: { borderColor: 'var(--red)' },
+  row: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '11px' },
+  select: { height: '42px', padding: '0 13px', background: '#fff', border: '1.5px solid var(--g200)', borderRadius: '7px', fontSize: '13px', fontFamily: "'Instrument Sans', sans-serif", color: 'var(--black)', outline: 'none', width: '100%', cursor: 'pointer', appearance: 'none', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239e9b93' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center', paddingRight: '32px' },
+  dropBase: { border: '2px dashed var(--g200)', borderRadius: '9px', padding: '24px 16px', textAlign: 'center', cursor: 'pointer', background: '#fff', transition: 'all 0.18s' },
+  dropHover: { borderColor: 'var(--black)', background: 'var(--g100)' },
+  dropHas: { borderColor: 'var(--green)', borderStyle: 'solid', background: 'var(--green-l)' },
+  dropError: { borderColor: 'var(--red)', background: 'var(--red-l)' },
+  dropIcon: { fontSize: '28px', marginBottom: '8px' },
+  dropMain: { fontSize: '13px', fontWeight: 600, color: 'var(--g500)', marginBottom: '3px' },
+  dropHint: { fontSize: '11px', color: 'var(--g400)' },
+  dropFile: { fontSize: '12px', fontWeight: 600, color: 'var(--green)', marginTop: '4px' },
+  btn: { width: '100%', height: '46px', background: 'var(--black)', color: '#fff', border: 'none', borderRadius: '9px', fontSize: '14px', fontWeight: 700, fontFamily: "'Instrument Sans', sans-serif", cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', transition: 'opacity 0.15s', marginTop: '4px' },
+  btnDisabled: { opacity: 0.5, cursor: 'not-allowed' },
+  progressWrap: { marginTop: '10px', background: 'var(--g200)', borderRadius: '3px', height: '3px', overflow: 'hidden' },
+  progressBar: { height: '3px', background: 'var(--black)', borderRadius: '3px', transition: 'width 0.3s ease' },
+  progressLabel: { fontSize: '11px', color: 'var(--g400)', marginTop: '5px', textAlign: 'center' },
+  errorBox: { background: 'var(--red-l)', border: '1px solid var(--red-b)', borderRadius: '7px', padding: '10px 13px', fontSize: '12px', color: 'var(--red)', lineHeight: 1.5 },
+  note: { fontSize: '11px', color: 'var(--g400)', textAlign: 'center', marginTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' },
+  // success
+  successWrap: { textAlign: 'center', padding: '8px 0' },
+  successCheck: { width: '60px', height: '60px', borderRadius: '50%', background: 'var(--black)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px', fontSize: '22px', color: '#fff' },
+  successTitle: { fontFamily: "'Instrument Serif', serif", fontSize: '26px', letterSpacing: '-0.6px', marginBottom: '8px' },
+  successSub: { fontSize: '13px', color: 'var(--g400)', lineHeight: 1.8, marginBottom: '22px' },
+  btnOutline: { height: '40px', padding: '0 22px', border: '1.5px solid var(--g200)', borderRadius: '7px', background: '#fff', fontSize: '13px', fontWeight: 600, fontFamily: "'Instrument Sans', sans-serif", cursor: 'pointer', color: 'var(--g600)' },
+  // spinner
+  spinner: { width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite' },
+};
+
+// ── SPINNER CSS ──
+const spinnerCSS = `@keyframes spin { to { transform: rotate(360deg); } }`;
+const styleTag = document.createElement('style');
+styleTag.textContent = spinnerCSS;
+document.head.appendChild(styleTag);
+
+// ── SHAREPOINT HELPERS ──
+async function getDigest() {
+  const res = await fetch(`${SP_SITE}/_api/contextinfo`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Accept': 'application/json;odata=verbose' }
+  });
+  if (!res.ok) throw new Error('Could not get SharePoint digest. Are you signed into Microsoft in this browser?');
+  const data = await res.json();
+  return data.d.GetContextWebInformation.FormDigestValue;
+}
+
+async function uploadToSharePoint(file, metadata, onProgress) {
+  onProgress(10, 'Connecting to SharePoint…');
+  const digest = await getDigest();
+
+  onProgress(30, 'Uploading file…');
+  const safeName = metadata.name.replace(/[^a-zA-Z0-9]/g, '_');
+  const date = new Date().toISOString().split('T')[0];
+  const ext = file.name.split('.').pop();
+  const fileName = `${safeName}_${date}.${ext}`;
+
+  const buf = await file.arrayBuffer();
+  const uploadUrl = `${SP_SITE}/_api/web/GetFolderByServerRelativeUrl('/sites/Scout/${SP_LIBRARY}')/Files/Add(url='${encodeURIComponent(fileName)}',overwrite=true)`;
+
+  const uploadRes = await fetch(uploadUrl, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json;odata=verbose',
+      'X-RequestDigest': digest,
+    },
+    body: buf,
+  });
+  if (!uploadRes.ok) {
+    const txt = await uploadRes.text();
+    throw new Error(`Upload failed (${uploadRes.status}). Make sure you are signed into Microsoft and have access to the Scout site.`);
+  }
+
+  onProgress(70, 'Saving your details…');
+  const uploadData = await uploadRes.json();
+
+  // Update list item metadata
+  const itemEndpoint = uploadData.d.ListItemAllFields.__deferred.uri;
+  const updateRes = await fetch(itemEndpoint, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json;odata=verbose',
+      'Content-Type': 'application/json;odata=verbose',
+      'X-HTTP-Method': 'MERGE',
+      'IF-MATCH': '*',
+      'X-RequestDigest': digest,
+    },
+    body: JSON.stringify({
+      '__metadata': { 'type': 'SP.Data.ResumeLibraryItem' },
+      'Title': metadata.name,
+      'CandidateEmail': metadata.email,
+      'CurrentRole': metadata.role,
+      'Domain': metadata.domain,
+    }),
+  });
+
+  onProgress(100, 'Done!');
+}
+
+// ── INPUT COMPONENT ──
+function Input({ id, type = 'text', placeholder, value, onChange, error }) {
+  const [focused, setFocused] = useState(false);
+  return (
+    <input
+      id={id}
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={{
+        ...S.input,
+        ...(focused ? S.inputFocus : {}),
+        ...(error ? S.inputError : {}),
+      }}
+    />
+  );
+}
+
+// ── SELECT COMPONENT ──
+function Select({ id, value, onChange, options, placeholder }) {
+  return (
+    <select id={id} value={value} onChange={e => onChange(e.target.value)} style={S.select}>
+      <option value="">{placeholder}</option>
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  );
+}
+
+// ── DROP ZONE COMPONENT ──
+function DropZone({ file, onFile, error }) {
+  const [dragging, setDragging] = useState(false);
+  const inputRef = useRef();
+
+  const handleDrop = useCallback(e => {
+    e.preventDefault();
+    setDragging(false);
+    const f = e.dataTransfer.files[0];
+    if (f) onFile(f);
+  }, [onFile]);
+
+  const style = {
+    ...S.dropBase,
+    ...(dragging ? S.dropHover : {}),
+    ...(file ? S.dropHas : {}),
+    ...(error && !file ? S.dropError : {}),
+  };
+
+  return (
+    <div
+      style={style}
+      onClick={() => inputRef.current.click()}
+      onDragOver={e => { e.preventDefault(); setDragging(true); }}
+      onDragLeave={() => setDragging(false)}
+      onDrop={handleDrop}
+    >
+      <div style={S.dropIcon}>{file ? '✓' : '📄'}</div>
+      {file ? (
+        <>
+          <div style={{ ...S.dropMain, color: 'var(--green)' }}>File ready</div>
+          <div style={S.dropFile}>{file.name}</div>
+          <div style={{ ...S.dropHint, color: 'var(--green)', opacity: 0.7, marginTop: '2px' }}>Click to change</div>
+        </>
+      ) : (
+        <>
+          <div style={S.dropMain}>Click to browse or drag your file here</div>
+          <div style={S.dropHint}>DOCX or PDF · max 10 MB</div>
+        </>
+      )}
+      <input
+        ref={inputRef}
+        type="file"
+        accept=".docx,.pdf"
+        style={{ display: 'none' }}
+        onChange={e => { if (e.target.files[0]) onFile(e.target.files[0]); }}
+      />
+    </div>
+  );
+}
+
+// ── MAIN APP ──
+function App() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState('');
+  const [domain, setDomain] = useState('');
+  const [exp, setExp] = useState('');
+  const [file, setFile] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [progressLabel, setProgressLabel] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  const onProgress = (pct, label) => {
+    setProgress(pct);
+    setProgressLabel(label);
+  };
+
+  const validate = () => {
+    const e = {};
+    if (!name.trim()) e.name = true;
+    if (!email.trim() || !email.includes('@')) e.email = true;
+    if (!role.trim()) e.role = true;
+    if (!domain) e.domain = true;
+    if (!file) e.file = true;
+    return e;
+  };
+
+  const handleFile = (f) => {
+    const ext = f.name.split('.').pop().toLowerCase();
+    if (!['docx', 'pdf'].includes(ext)) { setError('Only DOCX or PDF files are allowed.'); return; }
+    if (f.size > 10 * 1024 * 1024) { setError('File must be under 10 MB.'); return; }
+    setFile(f);
+    setError('');
+  };
+
+  const handleSubmit = async () => {
+    setError('');
+    const e = validate();
+    setErrors(e);
+    if (Object.keys(e).length > 0) {
+      setError('Please fill in all required fields.');
+      return;
+    }
+    setLoading(true);
+    setProgress(0);
+    try {
+      await uploadToSharePoint(file, { name, email, role, domain }, onProgress);
+      setTimeout(() => {
+        setLoading(false);
+        setSuccess(true);
+      }, 400);
+    } catch (err) {
+      setLoading(false);
+      setProgress(0);
+      setProgressLabel('');
+      setError(err.message);
+    }
+  };
+
+  const reset = () => {
+    setName(''); setEmail(''); setRole(''); setDomain(''); setExp('');
+    setFile(null); setErrors({}); setError(''); setSuccess(false);
+    setProgress(0); setProgressLabel('');
+  };
+
+  const domains = ['Power Platform', 'TypeScript / React', 'Python', 'Java', 'AWS / Cloud', '.NET / C#', 'DevOps', 'Architecture & Design', 'Data / ML', 'SharePoint', 'Other'];
+  const exps = ['0–1 years', '1–3 years', '3–5 years', '5–8 years', '8+ years'];
+
+  return (
+    <div style={S.page}>
+      {/* LEFT */}
+      <div style={S.left}>
+        <div>
+          <div style={S.logo}>
+            <span style={S.logoText}>Scout</span>
+            <div style={S.logoDot} />
+          </div>
+          <h1 style={S.headline}>
+            Your next<br />
+            project<br />
+            <em style={S.headlineEm}>starts here.</em>
+          </h1>
+          <p style={S.sub}>
+            Upload your resume and we'll match you to the right project. Our AI extracts your skills automatically.
+          </p>
+          <div style={S.steps}>
+            {[
+              ['01', 'Fill your details', 'Name, role and primary domain'],
+              ['02', 'Upload your resume', 'DOCX or PDF — AI parses it automatically'],
+              ['03', 'Get matched', 'Our team finds the right project for you'],
+            ].map(([n, t, s]) => (
+              <div key={n} style={S.step}>
+                <div style={S.stepNum}>{n}</div>
+                <div>
+                  <div style={S.stepTitle}>{t}</div>
+                  <div style={S.stepSub}>{s}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={S.leftBottom}>Stored securely on SharePoint · Yash Technologies</div>
+      </div>
+
+      {/* RIGHT */}
+      <div style={S.right}>
+        <div style={S.formWrap}>
+          {success ? (
+            <div style={S.successWrap}>
+              <div style={S.successCheck}>✓</div>
+              <div style={S.successTitle}>You're in the pool!</div>
+              <div style={S.successSub}>
+                Thanks <strong>{name.split(' ')[0]}</strong>. Your resume has been uploaded
+                and our team will be in touch at <strong>{email}</strong>.
+              </div>
+              <button style={S.btnOutline} onClick={reset}>Submit another version</button>
+            </div>
+          ) : (
+            <>
+              <div style={S.formTitle}>Submit your resume</div>
+              <div style={S.formSub}>Fill in your details — we'll review and match you to a project.</div>
+
+              {error && <div style={{ ...S.errorBox, marginBottom: '16px' }}>{error}</div>}
+
+              <div style={S.form}>
+                <div style={S.field}>
+                  <label style={S.label}>Full name <span style={S.req}>*</span></label>
+                  <Input id="name" placeholder="Omkar Vyavahare" value={name} onChange={setName} error={errors.name} />
+                </div>
+
+                <div style={S.row}>
+                  <div style={S.field}>
+                    <label style={S.label}>Email <span style={S.req}>*</span></label>
+                    <Input id="email" type="email" placeholder="you@yash.com" value={email} onChange={setEmail} error={errors.email} />
+                  </div>
+                  <div style={S.field}>
+                    <label style={S.label}>Current role <span style={S.req}>*</span></label>
+                    <Input id="role" placeholder="Trainee Programmer" value={role} onChange={setRole} error={errors.role} />
+                  </div>
+                </div>
+
+                <div style={S.row}>
+                  <div style={S.field}>
+                    <label style={S.label}>Domain <span style={S.req}>*</span></label>
+                    <Select id="domain" value={domain} onChange={setDomain} options={domains} placeholder="Select domain" />
+                  </div>
+                  <div style={S.field}>
+                    <label style={S.label}>Experience</label>
+                    <Select id="exp" value={exp} onChange={setExp} options={exps} placeholder="Select" />
+                  </div>
+                </div>
+
+                <div style={S.field}>
+                  <label style={S.label}>Resume / CV <span style={S.req}>*</span></label>
+                  <DropZone file={file} onFile={handleFile} error={errors.file} />
+                </div>
+
+                <div>
+                  <button
+                    style={{ ...S.btn, ...(loading ? S.btnDisabled : {}) }}
+                    onClick={handleSubmit}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <div style={S.spinner} />
+                    ) : (
+                      <><span>Submit resume</span><span>→</span></>
+                    )}
+                  </button>
+
+                  {loading && (
+                    <>
+                      <div style={S.progressWrap}>
+                        <div style={{ ...S.progressBar, width: `${progress}%` }} />
+                      </div>
+                      <div style={S.progressLabel}>{progressLabel}</div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div style={S.note}>🔒 Encrypted and stored securely on SharePoint</div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
