@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scout — Submit your resume</title>
+<title>Clarity — Submit your resume</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,207 +21,194 @@ html, body { height: 100%; font-family: 'Instrument Sans', sans-serif; backgroun
 /* LEFT */
 .left {
   background: var(--black); display: flex; flex-direction: column;
-  justify-content: space-between; padding: 48px;
+  justify-content: space-between; padding: 52px;
   position: sticky; top: 0; height: 100vh; overflow: hidden;
 }
 .left::after {
   content: ''; position: absolute; inset: 0;
-  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size: 36px 36px; pointer-events: none;
 }
-.logo { display: flex; align-items: center; gap: 8px; margin-bottom: 52px; }
-.logo-text { font-family: 'Instrument Serif', serif; font-size: 22px; color: #fff; letter-spacing: -0.5px; font-style: italic; }
+.logo { display: flex; align-items: center; gap: 8px; margin-bottom: 60px; }
+.logo-text { font-family: 'Instrument Serif', serif; font-size: 24px; color: #fff; letter-spacing: -0.5px; font-style: italic; }
 .logo-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 2.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.35;transform:scale(1.5)} }
-.headline { font-family: 'Instrument Serif', serif; font-size: 46px; line-height: 1.05; letter-spacing: -1.5px; color: #fff; margin-bottom: 16px; }
-.headline em { font-style: italic; color: rgba(255,255,255,0.4); }
-.sub { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.75; max-width: 300px; }
-.steps { margin-top: 44px; display: flex; flex-direction: column; gap: 14px; }
-.step { display: flex; align-items: flex-start; gap: 12px; opacity: 0; animation: fadeUp 0.5s ease forwards; }
+
+.headline { font-family: 'Instrument Serif', serif; font-size: 50px; line-height: 1.04; letter-spacing: -2px; color: #fff; margin-bottom: 20px; }
+.headline em { font-style: italic; color: rgba(255,255,255,0.38); }
+.sub { font-size: 14px; color: rgba(255,255,255,0.38); line-height: 1.8; max-width: 300px; }
+
+.steps { margin-top: 52px; display: flex; flex-direction: column; gap: 16px; }
+.step { display: flex; align-items: flex-start; gap: 13px; opacity: 0; animation: fadeUp 0.5s ease forwards; }
 .step:nth-child(1){animation-delay:0.1s} .step:nth-child(2){animation-delay:0.2s} .step:nth-child(3){animation-delay:0.3s}
-@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-.step-n { width: 22px; height: 22px; border-radius: 5px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.3); flex-shrink: 0; margin-top: 1px; }
-.step-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.75); margin-bottom: 2px; }
-.step-sub { font-size: 11px; color: rgba(255,255,255,0.3); }
-.left-bottom { font-size: 11px; color: rgba(255,255,255,0.18); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.step-n { width: 22px; height: 22px; border-radius: 5px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.28); flex-shrink: 0; margin-top: 1px; }
+.step-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.72); margin-bottom: 2px; }
+.step-sub { font-size: 11px; color: rgba(255,255,255,0.28); line-height: 1.5; }
+
+.left-bottom { font-size: 11px; color: rgba(255,255,255,0.15); letter-spacing: 0.02em; }
 
 /* RIGHT */
-.right { padding: 48px; display: flex; flex-direction: column; justify-content: center; min-height: 100vh; }
-.form-wrap { width: 100%; max-width: 420px; margin: 0 auto; }
-.form-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 5px; }
-.form-sub { font-size: 13px; color: var(--g400); line-height: 1.6; margin-bottom: 26px; }
+.right { padding: 52px; display: flex; flex-direction: column; justify-content: center; min-height: 100vh; background: var(--g50); }
+.form-wrap { width: 100%; max-width: 400px; margin: 0 auto; }
 
-/* FORM FIELDS */
-.form { display: flex; flex-direction: column; gap: 14px; }
-.field { display: flex; flex-direction: column; gap: 5px; }
+.form-title { font-size: 24px; font-weight: 700; letter-spacing: -0.6px; margin-bottom: 6px; }
+.form-sub { font-size: 13px; color: var(--g400); line-height: 1.65; margin-bottom: 32px; }
+
+.form { display: flex; flex-direction: column; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
 .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--g500); }
 .req { color: var(--red); }
+
 .input {
-  height: 42px; padding: 0 13px; background: #fff;
-  border: 1.5px solid var(--g200); border-radius: 7px;
-  font-size: 13px; font-family: 'Instrument Sans', sans-serif;
+  height: 46px; padding: 0 14px; background: #fff;
+  border: 1.5px solid var(--g200); border-radius: 8px;
+  font-size: 14px; font-family: 'Instrument Sans', sans-serif;
   color: var(--black); outline: none; width: 100%;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .input:focus { border-color: var(--black); box-shadow: 0 0 0 3px rgba(10,10,10,0.05); }
 .input.err { border-color: var(--red); }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
-select.input {
-  appearance: none; cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 11 11'%3E%3Cpath fill='%239e9b93' d='M5.5 7.5L1 3h9z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px;
-}
 
 /* DROP ZONE */
 .drop {
-  border: 2px dashed var(--g200); border-radius: 9px;
-  padding: 26px 16px; text-align: center; cursor: pointer;
+  border: 2px dashed var(--g200); border-radius: 10px;
+  padding: 36px 20px; text-align: center; cursor: pointer;
   background: #fff; transition: all 0.18s;
 }
 .drop:hover, .drop.drag { border-color: var(--black); background: var(--g100); }
 .drop.has { border-color: var(--green); border-style: solid; background: var(--green-l); }
 .drop.err-drop { border-color: var(--red); background: var(--red-l); }
-.drop-ico { font-size: 26px; margin-bottom: 8px; transition: transform 0.2s; }
-.drop:hover .drop-ico { transform: translateY(-2px); }
-.drop-main { font-size: 13px; font-weight: 600; color: var(--g500); margin-bottom: 3px; }
+.drop-ico { font-size: 32px; margin-bottom: 10px; display: block; transition: transform 0.2s; }
+.drop:hover .drop-ico { transform: translateY(-3px); }
+.drop.has .drop-ico { transform: none; }
+.drop-main { font-size: 14px; font-weight: 600; color: var(--g500); margin-bottom: 4px; }
 .drop.has .drop-main { color: var(--green); }
-.drop-hint { font-size: 11px; color: var(--g400); }
-.drop-fname { font-size: 11px; font-weight: 600; color: var(--green); margin-top: 3px; display: none; }
-.drop.has .drop-fname { display: block; }
+.drop-hint { font-size: 12px; color: var(--g400); }
 .drop.has .drop-hint { display: none; }
+.drop-fname { font-size: 12px; font-weight: 600; color: var(--green); margin-top: 4px; display: none; }
+.drop.has .drop-fname { display: block; }
 
-/* SUBMIT */
+/* SUBMIT BUTTON */
 .btn {
-  width: 100%; height: 46px; background: var(--black); color: #fff;
-  border: none; border-radius: 9px; font-size: 14px; font-weight: 700;
+  width: 100%; height: 50px; background: var(--black); color: #fff;
+  border: none; border-radius: 10px; font-size: 15px; font-weight: 700;
   font-family: 'Instrument Sans', sans-serif; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  transition: opacity 0.15s; margin-top: 2px;
+  transition: opacity 0.15s; margin-top: 4px; letter-spacing: -0.2px;
 }
 .btn:hover { opacity: 0.85; }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn-arrow { transition: transform 0.2s; }
-.btn:hover .btn-arrow { transform: translateX(3px); }
+.btn:hover .btn-arrow { transform: translateX(4px); }
 .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
 .btn.loading .spinner { display: block; }
 .btn.loading .btn-text, .btn.loading .btn-arrow { display: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.progress-wrap { margin-top: 10px; background: var(--g200); border-radius: 3px; height: 3px; overflow: hidden; display: none; }
+.progress-wrap { margin-top: 12px; background: var(--g200); border-radius: 3px; height: 3px; overflow: hidden; display: none; }
 .progress-wrap.show { display: block; }
 .progress-bar { height: 3px; background: var(--black); border-radius: 3px; width: 0%; transition: width 0.35s ease; }
-.progress-lbl { font-size: 11px; color: var(--g400); margin-top: 5px; text-align: center; min-height: 16px; }
+.progress-lbl { font-size: 11px; color: var(--g400); margin-top: 6px; text-align: center; min-height: 16px; }
 
-.error-box { background: var(--red-l); border: 1px solid var(--red-b); border-radius: 7px; padding: 10px 13px; font-size: 12px; color: var(--red); line-height: 1.5; margin-bottom: 14px; display: none; }
+.error-box { background: var(--red-l); border: 1px solid var(--red-b); border-radius: 8px; padding: 11px 14px; font-size: 12px; color: var(--red); line-height: 1.5; margin-bottom: 16px; display: none; }
 .error-box.show { display: block; }
-.note { font-size: 11px; color: var(--g400); text-align: center; margin-top: 13px; }
+
+.note { font-size: 11px; color: var(--g400); text-align: center; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
 /* SUCCESS */
 .success { display: none; text-align: center; padding: 8px 0; }
 .success.show { display: block; }
-.success-check { width: 58px; height: 58px; border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 22px; color: #fff; animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.success-check { width: 64px; height: 64px; border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; color: #fff; animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
 @keyframes pop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
-.success-title { font-family: 'Instrument Serif', serif; font-size: 26px; letter-spacing: -0.6px; margin-bottom: 8px; }
-.success-sub { font-size: 13px; color: var(--g400); line-height: 1.8; margin-bottom: 22px; }
-.btn-again { height: 40px; padding: 0 22px; border: 1.5px solid var(--g200); border-radius: 7px; background: #fff; font-size: 13px; font-weight: 600; font-family: 'Instrument Sans', sans-serif; cursor: pointer; color: var(--g600); transition: border-color 0.15s; }
+.success-title { font-family: 'Instrument Serif', serif; font-size: 28px; letter-spacing: -0.8px; margin-bottom: 8px; }
+.success-sub { font-size: 13px; color: var(--g400); line-height: 1.8; margin-bottom: 24px; }
+.btn-again { height: 42px; padding: 0 24px; border: 1.5px solid var(--g200); border-radius: 8px; background: #fff; font-size: 13px; font-weight: 600; font-family: 'Instrument Sans', sans-serif; cursor: pointer; color: var(--g600); transition: all 0.15s; }
 .btn-again:hover { border-color: var(--black); color: var(--black); }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .page { grid-template-columns: 1fr; }
-  .left { position: relative; height: auto; padding: 32px 24px; }
-  .headline { font-size: 32px; }
-  .right { padding: 32px 24px; min-height: auto; }
-  .field-row { grid-template-columns: 1fr; }
+  .left { position: relative; height: auto; padding: 36px 28px; }
+  .headline { font-size: 36px; }
+  .steps { margin-top: 32px; }
+  .right { padding: 36px 28px; min-height: auto; }
 }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- LEFT PANEL -->
+  <!-- LEFT -->
   <div class="left">
     <div>
       <div class="logo">
-        <span class="logo-text">Scout</span>
+        <span class="logo-text">Clarity</span>
         <div class="logo-dot"></div>
       </div>
-      <h1 class="headline">Your next<br>project<br><em>starts here.</em></h1>
-      <p class="sub">Upload your resume and we'll match you to the right project. Our AI extracts your skills automatically.</p>
+      <h1 class="headline">
+        Your next<br>
+        project<br>
+        <em>starts here.</em>
+      </h1>
+      <p class="sub">
+        Upload your resume and our AI will match you to the right project. Takes less than a minute.
+      </p>
       <div class="steps">
-        <div class="step"><div class="step-n">01</div><div><div class="step-title">Fill your details</div><div class="step-sub">Name, role and primary domain</div></div></div>
-        <div class="step"><div class="step-n">02</div><div><div class="step-title">Upload your resume</div><div class="step-sub">DOCX or PDF — AI parses it automatically</div></div></div>
-        <div class="step"><div class="step-n">03</div><div><div class="step-title">Get matched</div><div class="step-sub">Our team finds the right project for you</div></div></div>
+        <div class="step">
+          <div class="step-n">01</div>
+          <div>
+            <div class="step-title">Enter your name</div>
+            <div class="step-sub">Just your full name — that's all we need from you</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n">02</div>
+          <div>
+            <div class="step-title">Upload your resume</div>
+            <div class="step-sub">DOCX or PDF — AI extracts skills, domain and experience automatically</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n">03</div>
+          <div>
+            <div class="step-title">Get matched</div>
+            <div class="step-sub">Our team reviews your profile and finds the right project</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="left-bottom">Stored securely on Azure · Yash Technologies</div>
   </div>
 
-  <!-- RIGHT PANEL -->
+  <!-- RIGHT -->
   <div class="right">
     <div class="form-wrap">
 
-      <!-- SUCCESS STATE -->
+      <!-- SUCCESS -->
       <div class="success" id="successState">
         <div class="success-check">✓</div>
         <div class="success-title">You're in the pool!</div>
-        <div class="success-sub">Thanks <strong id="sName"></strong>. Your resume has been uploaded and our team will be in touch at <strong id="sEmail"></strong>.</div>
+        <div class="success-sub">
+          Thanks <strong id="sName"></strong>.<br>
+          Your resume has been uploaded and our team will be in touch soon.
+        </div>
         <button class="btn-again" onclick="resetForm()">Submit another version</button>
       </div>
 
       <!-- FORM -->
       <div id="formSection">
         <div class="form-title">Submit your resume</div>
-        <div class="form-sub">Fill in your details — we'll review and match you to a project.</div>
+        <div class="form-sub">Two steps — enter your name and upload your CV. That's it.</div>
 
         <div class="error-box" id="errorBox"></div>
 
         <div class="form">
           <div class="field">
             <label class="label">Full name <span class="req">*</span></label>
-            <input class="input" id="fName" type="text" placeholder="Omkar Vyavahare">
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label class="label">Email <span class="req">*</span></label>
-              <input class="input" id="fEmail" type="email" placeholder="you@yash.com">
-            </div>
-            <div class="field">
-              <label class="label">Current role <span class="req">*</span></label>
-              <input class="input" id="fRole" type="text" placeholder="Trainee Programmer">
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label class="label">Domain <span class="req">*</span></label>
-              <select class="input" id="fDomain">
-                <option value="">Select domain</option>
-                <option>Power Platform</option>
-                <option>TypeScript / React</option>
-                <option>Python</option>
-                <option>Java</option>
-                <option>AWS / Cloud</option>
-                <option>.NET / C#</option>
-                <option>DevOps</option>
-                <option>Architecture & Design</option>
-                <option>Data / ML</option>
-                <option>SharePoint</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="field">
-              <label class="label">Experience</label>
-              <select class="input" id="fExp">
-                <option value="">Select</option>
-                <option>0–1 years</option>
-                <option>1–3 years</option>
-                <option>3–5 years</option>
-                <option>5–8 years</option>
-                <option>8+ years</option>
-              </select>
-            </div>
+            <input class="input" id="fName" type="text" placeholder="Omkar Vyavahare" autocomplete="name">
           </div>
 
           <div class="field">
@@ -231,8 +218,8 @@ select.input {
               ondragover="onDragOver(event)"
               ondragleave="onDragLeave(event)"
               ondrop="onDrop(event)">
-              <div class="drop-ico" id="dropIco">📄</div>
-              <div class="drop-main" id="dropMain">Click to browse or drag your file here</div>
+              <span class="drop-ico" id="dropIco">📄</span>
+              <div class="drop-main" id="dropMain">Click to browse or drag here</div>
               <div class="drop-hint">DOCX or PDF · max 10 MB</div>
               <div class="drop-fname" id="dropFname"></div>
             </div>
@@ -252,7 +239,7 @@ select.input {
           </div>
         </div>
 
-        <div class="note">🔒 Encrypted and stored securely on Azure Blob Storage</div>
+        <div class="note">🔒 Encrypted and stored securely on Azure</div>
       </div>
 
     </div>
@@ -268,15 +255,13 @@ const AZURE = {
   container: 'scoutresumes',
   sasToken:  'sv=2024-11-04&ss=b&srt=o&sp=wctfx&se=2027-03-23T14:40:32Z&st=2026-03-23T06:25:32Z&spr=https&sig=RMZGOkK3SS0aTFcHnQjLy0oT62IXnmryGeaJ97dKuZ0%3D',
 };
-// Base URL for uploads
 const BLOB_BASE = `https://${AZURE.account}.blob.core.windows.net/${AZURE.container}`;
 // ══════════════════════════════════════
 
 let selectedFile = null;
 
-// ── FILE HANDLING ──
 function onDragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('drag'); }
-function onDragLeave(e) { document.getElementById('dropZone').classList.remove('drag'); }
+function onDragLeave() { document.getElementById('dropZone').classList.remove('drag'); }
 function onDrop(e) {
   e.preventDefault();
   document.getElementById('dropZone').classList.remove('drag');
@@ -298,73 +283,52 @@ function setFile(f) {
   hideError();
 }
 
-// ── SUBMIT ──
 async function submitForm() {
   hideError();
-
-  const name   = document.getElementById('fName').value.trim();
-  const email  = document.getElementById('fEmail').value.trim();
-  const role   = document.getElementById('fRole').value.trim();
-  const domain = document.getElementById('fDomain').value;
-  const exp    = document.getElementById('fExp').value;
-
-  // Validate
-  if (!name)                        return showError('Please enter your full name.');
-  if (!email || !email.includes('@')) return showError('Please enter a valid email address.');
-  if (!role)                        return showError('Please enter your current role.');
-  if (!domain)                      return showError('Please select your primary domain.');
-  if (!selectedFile)                return showError('Please upload your resume file.');
+  const name = document.getElementById('fName').value.trim();
+  if (!name) return showError('Please enter your full name.');
+  if (!selectedFile) return showError('Please upload your resume file.');
 
   setLoading(true);
   setProgress(10, 'Preparing upload…');
 
   try {
-    // Build a unique blob name
+    // Build unique blob name: FirstName_LastName_timestamp.ext
     const safeName = name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '');
-    const ts       = Date.now();
-    const ext      = selectedFile.name.split('.').pop();
+    const ts = Date.now();
+    const ext = selectedFile.name.split('.').pop();
     const blobName = `${safeName}_${ts}.${ext}`;
 
-    setProgress(30, 'Uploading resume…');
+    setProgress(40, 'Uploading resume…');
 
-    // Upload file to Azure Blob
     const uploadUrl = `${BLOB_BASE}/${encodeURIComponent(blobName)}?${AZURE.sasToken}`;
-    const uploadRes = await fetch(uploadUrl, {
+    const res = await fetch(uploadUrl, {
       method: 'PUT',
       headers: {
         'x-ms-blob-type': 'BlockBlob',
         'x-ms-meta-candidatename': encodeURIComponent(name),
-        'x-ms-meta-email':         encodeURIComponent(email),
-        'x-ms-meta-role':          encodeURIComponent(role),
-        'x-ms-meta-domain':        encodeURIComponent(domain),
-        'x-ms-meta-experience':    encodeURIComponent(exp || 'Not specified'),
         'x-ms-meta-submittedat':   encodeURIComponent(new Date().toISOString()),
         'Content-Type': selectedFile.type || 'application/octet-stream',
       },
       body: selectedFile,
     });
 
-    if (!uploadRes.ok) {
-      const txt = await uploadRes.text();
-      throw new Error(`Upload failed (${uploadRes.status}): ${txt}`);
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`Upload failed (${res.status}). Please try again.`);
     }
 
     setProgress(100, 'Done!');
-
-    setTimeout(() => {
-      setLoading(false);
-      showSuccess(name, email);
-    }, 400);
+    setTimeout(() => { setLoading(false); showSuccess(name); }, 400);
 
   } catch (err) {
     setLoading(false);
     setProgress(0, '');
     document.getElementById('progressWrap').classList.remove('show');
-    showError(err.message || 'Upload failed. Please try again.');
+    showError(err.message);
   }
 }
 
-// ── UI HELPERS ──
 function setLoading(on) {
   const btn = document.getElementById('submitBtn');
   btn.classList.toggle('loading', on);
@@ -377,29 +341,21 @@ function setProgress(pct, lbl) {
 }
 function showError(msg) {
   const el = document.getElementById('errorBox');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
 }
-function hideError() {
-  document.getElementById('errorBox').classList.remove('show');
-}
-function showSuccess(name, email) {
+function hideError() { document.getElementById('errorBox').classList.remove('show'); }
+function showSuccess(name) {
   document.getElementById('formSection').style.display = 'none';
   document.getElementById('successState').classList.add('show');
-  document.getElementById('sName').textContent  = name.split(' ')[0];
-  document.getElementById('sEmail').textContent = email;
+  document.getElementById('sName').textContent = name.split(' ')[0];
 }
 function resetForm() {
   document.getElementById('formSection').style.display = 'block';
   document.getElementById('successState').classList.remove('show');
-  document.getElementById('fName').value  = '';
-  document.getElementById('fEmail').value = '';
-  document.getElementById('fRole').value  = '';
-  document.getElementById('fDomain').value = '';
-  document.getElementById('fExp').value   = '';
+  document.getElementById('fName').value = '';
   document.getElementById('dropZone').className = 'drop';
-  document.getElementById('dropIco').textContent  = '📄';
-  document.getElementById('dropMain').textContent = 'Click to browse or drag your file here';
+  document.getElementById('dropIco').textContent = '📄';
+  document.getElementById('dropMain').textContent = 'Click to browse or drag here';
   document.getElementById('dropFname').textContent = '';
   document.getElementById('fileIn').value = '';
   document.getElementById('progressWrap').classList.remove('show');
